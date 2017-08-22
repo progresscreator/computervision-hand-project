@@ -1,0 +1,44 @@
+
+
+Find Hand
+
+Sobel edge detect / Create binary image
+Compute axis of elongation for initial object: hand, arm				#arm_elongation
+Find widest point of initial object: hand, arm							#palm_centroid
+	Set palm_centroid to point of widest line perpendiuclar 
+	to arm_elongation and intersection of arm_elongation
+	
+##
+Post-implementation Notes:
+Methods work well to locate palm centroid at most any orientation, frame placement, or size (perspective)
+in relation to the camera. Accompanying image of lines of width search.
+##
+
+Search out from palm_centroid on arm_elongation looking
+for greatest amount of directional blackspace. Mark direction
+of highest amount of blackspace as fingertip_direction. 				#fingertip_direction
+
+##
+Post-implementation Notes:
+Fingertip direction is found regardless of hand orientation, frame placement, size (perspective),
+or number of fingers visible to the camera. Accompanying video.
+
+fingertip.avi
+The black line shows the direction of fingertips in the image. This directionality changes
+as the fingertips move in the image. Also note the green palm centroid in the video, which sticks
+to open and closed palms well and also shows success at sticking to sideways palms.
+##
+
+
+Find point at which arm_elongation hits the image-border
+in the direction of fingertip_direction. Record this point
+as finger_goal. Then find the initial object pixel that has				#finger_goal
+the shortest euclidean distance to finger_goal.
+Record this pixel as curr_finger_tip.									#curr_finger_tip
+
+Record the euclidean distance from curr_finger_tip to
+palm_centroid as tip_palm_dimension.									#tip_palm_dimension
+
+Mark hand_region pixels as all initial object pixels 					#hand_region
+falling within fingertip_direction of palm_centroid
+parallel to arm_elongation.
